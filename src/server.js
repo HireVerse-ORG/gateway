@@ -5,6 +5,8 @@ const app = express();
 
 const userServerUrl = "http://localhost:5001";
 const jobServerUrl = "http://localhost:5003";
+const profileServerUrl = "http://localhost:5004";
+const paymentServerUrl = "http://localhost:5005";
 
 const proxyOptions = {
   changeOrigin: true,
@@ -26,6 +28,26 @@ app.use(
   createProxyMiddleware({
     target: jobServerUrl,
     pathRewrite: (path, req) => path.replace("/", "/api/jobs/"),
+    ...proxyOptions,
+  })
+);
+
+// Proxy middleware for /api/profile/*
+app.use(
+  "/api/profile",
+  createProxyMiddleware({
+    target: profileServerUrl,
+    pathRewrite: (path, req) => path.replace("/", "/api/profile/"),
+    ...proxyOptions,
+  })
+);
+
+// Proxy middleware for /api/payment/*
+app.use(
+  "/api/payment",
+  createProxyMiddleware({
+    target: paymentServerUrl,
+    pathRewrite: (path, req) => path.replace("/", "/api/payment/"),
     ...proxyOptions,
   })
 );
