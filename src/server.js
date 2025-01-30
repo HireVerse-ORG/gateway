@@ -4,6 +4,7 @@ const { createProxyMiddleware } = require("http-proxy-middleware");
 const app = express();
 
 const userServerUrl = "http://localhost:5001";
+const notificationServerUrl = "http://localhost:5002";
 const jobServerUrl = "http://localhost:5003";
 const profileServerUrl = "http://localhost:5004";
 const paymentServerUrl = "http://localhost:5005";
@@ -19,6 +20,16 @@ app.use(
   createProxyMiddleware({
     target: userServerUrl,
     pathRewrite: (path, req) => path.replace("/", "/api/user/"),
+    ...proxyOptions,
+  })
+);
+
+// Proxy middleware for /api/user/*
+app.use(
+  "/api/notifications",
+  createProxyMiddleware({
+    target: notificationServerUrl,
+    pathRewrite: (path, req) => path.replace("/", "/api/notifications/"),
     ...proxyOptions,
   })
 );
