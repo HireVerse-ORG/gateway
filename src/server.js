@@ -8,6 +8,7 @@ const notificationServerUrl = "http://localhost:5002";
 const jobServerUrl = "http://localhost:5003";
 const profileServerUrl = "http://localhost:5004";
 const paymentServerUrl = "http://localhost:5005";
+const chatServerUrl = "http://localhost:5006";
 
 const proxyOptions = {
   changeOrigin: true,
@@ -59,6 +60,16 @@ app.use(
   createProxyMiddleware({
     target: paymentServerUrl,
     pathRewrite: (path, req) => path.replace("/", "/api/payment/"),
+    ...proxyOptions,
+  })
+);
+
+// Proxy middleware for /api/chats/*
+app.use(
+  "/api/chats",
+  createProxyMiddleware({
+    target: chatServerUrl,
+    pathRewrite: (path, req) => path.replace("/", "/api/chats/"),
     ...proxyOptions,
   })
 );
