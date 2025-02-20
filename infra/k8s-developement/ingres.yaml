@@ -2,20 +2,81 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: hireverse-ingress
+  namespace: hireverse
   annotations:
-    kubernetes.io/ingress.class: nginx
     nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://localhost:3000"
+    nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization, Content-Type"
 spec:
   ingressClassName: nginx  
   rules:
-    - host: api.hireverse.dev  
+    - host: localhost 
       http:
         paths:
-          - path: /api/user/?(.*)
-            pathType: ImplementationSpecific  
+          - path: /api/user
+            pathType: Prefix  
             backend:
               service:
                 name: user-srv
                 port:
                   number: 5001
+          - path: /api/notifications
+            pathType: Prefix  
+            backend:
+              service:
+                name: notification-srv
+                port:
+                  number: 5002
+          - path: /api/jobs
+            pathType: Prefix  
+            backend:
+              service:
+                name: job-srv
+                port:
+                  number: 5003
+          - path: /api/profile
+            pathType: Prefix  
+            backend:
+              service:
+                name: profile-srv
+                port:
+                  number: 5004
+          - path: /api/payment
+            pathType: Prefix  
+            backend:
+              service:
+                name: payment-srv
+                port:
+                  number: 5005
+          - path: /api/chats
+            pathType: Prefix  
+            backend:
+              service:
+                name: chat-srv
+                port:
+                  number: 5006
+
+    - host: notification-ws.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: notification-srv
+                port:
+                  number: 7002
+
+    - host: chat-ws.localhost
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: chat-srv
+                port:
+                  number: 7006
+
 

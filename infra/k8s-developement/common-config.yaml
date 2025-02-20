@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-config
+  namespace: hireverse
+data:
+  NOTIFICATION_SERVICE_URL: "notification-srv:6002"
+  JOB_SERVICE_URL: "job-srv:6003"
+  PROFILE_SERVICE_URL: "profile-srv:6004"
+  PAYMENT_SERVICE_URL: "payment-srv:6005"
+  KAFKA_SERVER: "kafka-srv:9092"

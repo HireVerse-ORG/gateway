@@ -4,4 +4,7 @@ metadata:
   name: hireverse
 manifests:
   rawYaml:
+    - infra/k8s-developement/namespace.yaml
+    - infra/k8s-developement/deployments/zookeeper-depl.yaml
+    - infra/k8s-developement/deployments/kafka-depl.yaml
     - infra/k8s-developement/*
