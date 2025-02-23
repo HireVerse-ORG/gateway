@@ -1,0 +1,15 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hireverse-cert
+  namespace: hireverse
+spec:
+  secretName: hireverse-tls
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
+  commonName: api.hireverse.xyz
+  dnsNames:
+    - api.hireverse.xyz
+    - notification-ws.hireverse.xyz
+    - chat-ws.hireverse.xyz

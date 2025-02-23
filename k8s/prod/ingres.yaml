@@ -1,0 +1,86 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hireverse-ingress
+  namespace: hireverse
+  annotations:
+    nginx.ingress.kubernetes.io/use-regex: "true"
+    nginx.ingress.kubernetes.io/enable-cors: "true"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://api.hireverse.xyz, https://api.hireverse.xyz, https://notification-ws.hireverse.xyz, https://chat-ws.hireverse.xyz"
+spec:
+  ingressClassName: nginx    
+  rules:
+    - host: api.hireverse.xyz
+      http:
+        paths:
+          - path: /api/user
+            pathType: Prefix  
+            backend:
+              service:
+                name: user-srv
+                port:
+                  number: 5001
+          - path: /api/notifications
+            pathType: Prefix  
+            backend:
+              service:
+                name: notification-srv
+                port:
+                  number: 5002
+          - path: /api/jobs
+            pathType: Prefix  
+            backend:
+              service:
+                name: job-srv
+                port:
+                  number: 5003
+          - path: /api/profile
+            pathType: Prefix  
+            backend:
+              service:
+                name: profile-srv
+                port:
+                  number: 5004
+          - path: /api/payment
+            pathType: Prefix  
+            backend:
+              service:
+                name: payment-srv
+                port:
+                  number: 5005
+          - path: /api/chats
+            pathType: Prefix  
+            backend:
+              service:
+                name: chat-srv
+                port:
+                  number: 5006
+
+    - host: notification-ws.hireverse.xyz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: notification-srv
+                port:
+                  number: 7002
+
+    - host: chat-ws.hireverse.xyz
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: chat-srv
+                port:
+                  number: 7006
+  tls:
+  - hosts:
+      - api.hireverse.xyz
+      - notification-ws.hireverse.xyz
+      - chat-ws.hireverse.xyz  
+    secretName: hireverse-tls
+          

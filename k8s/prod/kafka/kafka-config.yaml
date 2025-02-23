@@ -1,0 +1,29 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: kafka-topics-config
+  namespace: hireverse
+data:
+  KAFKA_CREATE_TOPICS: >-
+    user-created:1:1,
+    job-validation-request:1:1,
+    job-status-updated:1:1,
+    job-post-accepted:1:1,
+    job-post-rejected:1:1,
+    job-applied:1:1,
+    job-application-accepted:1:1,
+    job-application-rejected:1:1,
+    job-application-viewed:1:1,
+    job-application-viewed-updated:1:1,
+    RESUME_COMMENTED:1:1,
+    follow-requested:1:1,
+    follow-accepted:1:1,
+    follow-rejected:1:1,
+    interview-scheduled:1:1,
+    interview-schedule-accepted:1:1,
+    interview-schedule-rejected:1:1,
+    interview-schedule-cancelled:1:1,
+    job-offered:1:1,
+    job-offer-accepted:1:1,
+    job-offer-rejected:1:1
+
