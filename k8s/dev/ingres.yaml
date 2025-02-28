@@ -6,8 +6,7 @@ metadata:
   annotations:
     nginx.ingress.kubernetes.io/use-regex: "true"
     nginx.ingress.kubernetes.io/enable-cors: "true"
-    nginx.ingress.kubernetes.io/cors-allow-origin: "http://localhost:3000"
-    nginx.ingress.kubernetes.io/cors-allow-headers: "Authorization, Content-Type"
+    nginx.ingress.kubernetes.io/cors-allow-origin: "http://localhost, http://notification-ws.localhost, http://chat-ws.localhost"
 spec:
   ingressClassName: nginx  
   rules:
@@ -78,5 +77,7 @@ spec:
                 name: chat-srv
                 port:
                   number: 7006
+
+
 
 

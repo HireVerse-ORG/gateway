@@ -4,5 +4,6 @@ metadata:
   name: hireverse
 manifests:
   rawYaml:
-    - infra/k8s/base/*
-    - infra/k8s/dev/*
+    - k8s/base/*
+    - k8s/dev/ingres.yaml
+    - k8s/logging/*

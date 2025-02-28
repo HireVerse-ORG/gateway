@@ -1,0 +1,81 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: elasticsearch
+  namespace: logging
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elasticsearch
+  template:
+    metadata:
+      labels:
+        app: elasticsearch
+    spec:
+      containers:
+        - name: elasticsearch
+          image: elasticsearch:7.9.1
+          ports:
+            - containerPort: 9200
+            - containerPort: 9300
+          env:
+            - name: ELASTIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: elasticsearch-secret
+                  key: ELASTIC_PASSWORD
+            - name: discovery.type
+              value: "single-node"
+            - name: http.host
+              value: "0.0.0.0"
+            - name: transport.host
+              value: "0.0.0.0"
+            - name: xpack.security.enabled
+              value: "false" 
+            - name: xpack.monitoring.enabled
+              value: "false" 
+            - name: bootstrap.memory_lock
+              value: "true" 
+            - name: ES_JAVA_OPTS
+              value: "-Xms1g -Xmx1g" 
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "250m"
+            limits:
+              memory: "2Gi"
+              cpu: "500m"
+          volumeMounts:
+            - name: es-data
+              mountPath: /usr/share/elasticsearch/data
+            - name: elasticsearch-config
+              mountPath: /usr/share/elasticsearch/config/elasticsearch.yml
+              subPath: elasticsearch.yml
+      volumes:
+        - name: es-data
+          persistentVolumeClaim:
+            claimName: elasticsearch-pvc
+        - name: elasticsearch-config
+          configMap:
+            name: elasticsearch-config
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: elasticsearch
+  namespace: logging
+spec:
+  selector:
+    app: elasticsearch
+  ports:
+    - name: http
+      protocol: TCP
+      port: 9200
+      targetPort: 9200
+    - name: transport
+      protocol: TCP
+      port: 9300
+      targetPort: 9300
+
